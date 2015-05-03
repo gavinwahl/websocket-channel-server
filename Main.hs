@@ -116,8 +116,8 @@ application serverState channelName connection = do
         in forM_ (connections channel) (\c ->
             when (c /= connection) $ sendMessage c message))
     disconnect = do
-      modifyMVar_ serverState (\state -> return $ removeConnection state channelName connection)
       broadcast $ Disconnect connection
+      modifyMVar_ serverState (\state -> return $ removeConnection state channelName connection)
     
 talk :: MVar ServerState -> Connection -> (Message -> IO ()) -> IO ()
 talk serverState myConnection broadcast = do
